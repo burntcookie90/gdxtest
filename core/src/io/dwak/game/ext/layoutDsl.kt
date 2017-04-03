@@ -19,6 +19,7 @@ fun Stage.addGroup(group: Group) {
 }
 
 data class Position(val x: Float, val y: Float)
+infix fun Float.by(other: Float) = Position(this, other)
 
 @GroupMarker
 abstract class Group(debug: Boolean, val isHorizontal: Boolean) {
@@ -33,18 +34,20 @@ class Vertical(val debug: Boolean) : Group(debug, false) {
     group.addActor(actor)
   }
 
-  fun vertical(align: Int = Align.center, f: Vertical.() -> Unit) {
+  fun vertical(align: Int = Align.center, f: Vertical.() -> Unit): Group {
     val v = Vertical(debug)
     f.invoke(v)
     this.group.align(align)
     this.group.addActor(v.group)
+    return v
   }
 
-  fun horizontal(align: Int = Align.center, f: Horizontal.() -> Unit) {
+  fun horizontal(align: Int = Align.center, f: Horizontal.() -> Unit): Group {
     val h = Horizontal(debug)
     f.invoke(h)
     this.group.align(align)
     this.group.addActor(h.group)
+    return h
   }
 }
 
@@ -56,19 +59,21 @@ class Horizontal(val debug: Boolean) : Group(debug, true) {
     group.addActor(actor)
   }
 
-  fun vertical(align: Int = Align.center, f: Vertical.() -> Unit) {
+  fun vertical(align: Int = Align.center, f: Vertical.() -> Unit): Group {
     val v = Vertical(debug)
     f.invoke(v)
     this.group.align(align)
     this.group.addActor(v.group)
+    return v
   }
 
-  fun horizontal(align: Int = Align.center, f: Horizontal.() -> Unit) {
+  fun horizontal(align: Int = Align.center, f: Horizontal.() -> Unit): Group {
     val h = Horizontal(debug)
     f.invoke(h)
     h.group.rowAlign(rowAlign)
     this.group.align(align)
     this.group.addActor(h.group)
+    return h
   }
 }
 

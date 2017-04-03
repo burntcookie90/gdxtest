@@ -6,53 +6,41 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
 import io.dwak.game.ext.Position
 import io.dwak.game.ext.addHorizontal
+import io.dwak.game.ext.by
 
 class MyGdxGame : ApplicationAdapter() {
-  internal lateinit var batch: SpriteBatch
-  internal lateinit var img: Texture
+  internal val batch: SpriteBatch by lazy { SpriteBatch() }
+  internal val img: Texture by lazy { Texture("badlogic.jpg") }
   internal val stage: Stage by lazy { Stage(FitViewport(1280f, 720f)) }
   private val skin by lazy { Skin(Gdx.files.internal("default/uiskin.json")) }
 
   override fun create() {
     Gdx.input.inputProcessor = stage
-    batch = SpriteBatch()
-    img = Texture("badlogic.jpg")
-
-    val usernameLabel = Label("Username", skin)
-    val usernameText = TextField("", skin)
-
-    val loginButton = TextButton("Login", skin)
-    val exitButton = TextButton("Exit", skin)
-
-    val passwordLabel = Label("Password", skin)
-    val passwordText = TextField("", skin)
 
     stage.addHorizontal(debug = true) {
       rowAlign = Align.top
-      position = Position(800f, 600f)
+      position = 800f by 600f
       vertical(align = Align.left) {
         horizontal {
-          add(usernameLabel)
-          add(usernameText)
+          add(Label("Username", skin))
+          add(TextField("", skin))
         }
         horizontal {
-          add(passwordLabel)
-          add(passwordText)
+          add(Label("Password", skin))
+          add(TextField("", skin))
         }
       }
       vertical {
-        add(loginButton)
-        add(exitButton)
+        add(TextButton("Login", skin))
+        add(TextButton("Exit", skin))
       }
     }
   }
