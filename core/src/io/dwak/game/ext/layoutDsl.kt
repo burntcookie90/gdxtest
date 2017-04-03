@@ -19,6 +19,7 @@ fun Stage.addGroup(group: Group) {
 }
 
 data class Position(val x: Float, val y: Float)
+
 infix fun Float.by(other: Float) = Position(this, other)
 
 @GroupMarker
@@ -78,7 +79,9 @@ class Horizontal(val debug: Boolean) : Group(debug, true) {
 }
 
 fun Stage.addVertical(debug: Boolean = false, align: Int = Align.center, f: Vertical.() -> Unit): Vertical {
-  return Vertical(debug).also { f.invoke(it) }.also {
+  return Vertical(debug).also {
+    f.invoke(it)
+    it.group.align(align)
     addGroup(it)
   }
 }
