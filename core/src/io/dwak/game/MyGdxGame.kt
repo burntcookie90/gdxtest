@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
+import io.dwak.game.ext.Position
+import io.dwak.game.ext.addHorizontal
 
 class MyGdxGame : ApplicationAdapter() {
   internal lateinit var batch: SpriteBatch
@@ -35,40 +37,24 @@ class MyGdxGame : ApplicationAdapter() {
     val passwordLabel = Label("Password", skin)
     val passwordText = TextField("", skin)
 
-    val usernameGroup = HorizontalGroup().apply {
-      debug = true
-      addActor(usernameLabel)
-      addActor(usernameText)
-      align(Align.center)
+    stage.addHorizontal(debug = true) {
+      rowAlign = Align.top
+      position = Position(800f, 600f)
+      vertical(align = Align.left) {
+        horizontal {
+          add(usernameLabel)
+          add(usernameText)
+        }
+        horizontal {
+          add(passwordLabel)
+          add(passwordText)
+        }
+      }
+      vertical {
+        add(loginButton)
+        add(exitButton)
+      }
     }
-    val passwordGroup = HorizontalGroup().apply {
-      debug = true
-      addActor(passwordLabel)
-      addActor(passwordText)
-      align(Align.center)
-    }
-
-    val buttonGroup = VerticalGroup().apply {
-      debug = true
-      addActor(loginButton)
-      addActor(exitButton)
-    }
-    val inputGroup = VerticalGroup().apply {
-      debug = true
-      addActor(usernameGroup)
-      addActor(passwordGroup)
-      align(Align.left)
-    }
-
-    val uiGroup = HorizontalGroup().apply {
-      addActor(inputGroup)
-      addActor(buttonGroup)
-      rowAlign(Align.top)
-      setPosition(800f, 600f)
-    }
-    stage.addActor(uiGroup)
-//    stage.addActor(buttonGroup)
-//    rootTable.add(table.right().top())
   }
 
   override fun render() {
@@ -79,7 +65,6 @@ class MyGdxGame : ApplicationAdapter() {
     batch.begin()
     stage.act(Gdx.graphics.deltaTime)
     stage.draw()
-//    batch.draw(img, 0f, 0f)
     batch.end()
   }
 
